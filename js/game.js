@@ -375,21 +375,87 @@
     },
 
     /**
+     * Отрисовка сообщения
+     */
+     _drawText: function(text,width) {
+        var words = text.split(" ");
+        var line = "";
+        var x= 390;
+        var y= 0;
+        var lineHeight=25;
+        var ctx = this.ctx;
+        ctx.font= '16px PT Mono';
+
+        // вычисление высоты окна сообщения
+        for (var n = 0; n < words.length; n++) {
+            var textLine = line + words[n] + " ";
+            var textWidth = ctx.measureText(textLine).width;
+            if (textWidth > width) {
+                line = words[n] + " ";
+                y += lineHeight;
+            }
+            else {
+                line = textLine;
+            }
+        }
+        y=y+45;
+        // отрисовка тени
+        ctx.beginPath();   
+        ctx.moveTo(410,230-y);
+        ctx.lineTo(610,230-y);
+        ctx.lineTo(610,230);
+        ctx.lineTo(310,230);
+        ctx.lineTo(410,230-y);
+        ctx.fillStyle= 'rgba(0, 0, 0, 0.7)';
+        ctx.fill();
+
+        // отрисовка окна сообщения
+        ctx.beginPath();   
+        ctx.moveTo(400,220-y);
+        ctx.lineTo(600,220-y);
+        ctx.lineTo(600,220);
+        ctx.lineTo(300,220);
+        ctx.lineTo(400,220-y);
+        ctx.fillStyle= '#FFFFFF';
+        ctx.fill();
+
+        //отрисовка текста сообщения
+        ctx.font= '16px PT Mono';
+        ctx.fillStyle= '#000';
+
+        y= 250-y;
+        var line = "";
+        for (var n = 0; n < words.length; n++) {
+            var textLine = line + words[n] + " ";
+            var textWidth = ctx.measureText(textLine).width;
+            if (textWidth > width) {
+                ctx.fillText(line, x, y);
+                line = words[n] + " ";
+                y += lineHeight;
+            }
+            else {
+                line = textLine;
+            }
+        }
+        ctx.fillText(line, x, y);
+     },
+
+      /**
      * Отрисовка экрана паузы.
      */
     _drawPauseScreen: function() {
       switch (this.state.currentStatus) {
         case Verdict.WIN:
-          console.log('you have won!');
+          this._drawText('Вы выиграли!', 200); //console.log('you have won!');
           break;
         case Verdict.FAIL:
-          console.log('you have failed!');
+          this._drawText('вы потерпели неудачу!', 200); //console.log('you have failed!');
           break;
         case Verdict.PAUSE:
-          console.log('game is on pause!');
+          this._drawText('Пауза. Для продолжения нажмите пробел', 200); //console.log('game is on pause!');
           break;
         case Verdict.INTRO:
-          console.log('welcome to the game! Press Space to start');
+          this._drawText('Добро пожаловать! Для начала нажмите пробел. Управляйте героем стрелками / SHIFT - выстрел.', 200); //console.log('welcome to the game! Press Space to start');
           break;
       }
     },
