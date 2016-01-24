@@ -393,28 +393,28 @@
         if (textWidth > width) {
           line = words[n] + ' ';
           y += lineHeight;
-          } else {
+        } else {
           line = textLine;
-          }
+        }
       }
-      y=y+45;
+      y = y+45;
       // отрисовка тени
       ctx.beginPath();   
-      ctx.moveTo(410, 230-y);
-      ctx.lineTo(610, 230-y);
+      ctx.moveTo(410, 230 - y);
+      ctx.lineTo(610, 230 - y);
       ctx.lineTo(610, 230);
       ctx.lineTo(310, 230);
-      ctx.lineTo(410, 230-y);
+      ctx.lineTo(410, 230 - y);
       ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
       ctx.fill();
 
       // отрисовка окна сообщения
       ctx.beginPath();   
-      ctx.moveTo(400, 220-y);
-      ctx.lineTo(600, 220-y);
+      ctx.moveTo(400, 220 - y);
+      ctx.lineTo(600, 220 - y);
       ctx.lineTo(600, 220);
       ctx.lineTo(300, 220);
-      ctx.lineTo(400, 220-y);
+      ctx.lineTo(400, 220 - y);
       ctx.fillStyle = '#FFFFFF';
       ctx.fill();
 
@@ -431,9 +431,9 @@
           ctx.fillText(line, x, y);
           line = words[n] + ' ';
           y += lineHeight;
-          } else {
+        } else {
           line = textLine;
-          }
+        }
       }
       ctx.fillText(line, x, y);
     },
