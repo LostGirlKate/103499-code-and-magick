@@ -430,7 +430,7 @@
       for (n = 0; n < textNew.length; n++) {
         ctx.fillText(textNew[n], x, y);
         y += lineHeight;
-      };
+      }
     },
 
       /**
