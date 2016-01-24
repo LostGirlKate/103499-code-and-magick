@@ -380,26 +380,30 @@
     _drawText: function(text, width) {
       var words = text.split(' ');
       var line = '';
-      var x = 390;
+      var x = 395;
       var y = 0;
       var lineHeight = 25;
       var ctx = this.ctx;
+      var textNew = [];
       ctx.font = '16px PT Mono';
 
-      // вычисление высоты окна сообщения
+      // вычисление высоты окна сообщения, создание массива строк для отрисовки
       for (var n = 0; n < words.length; n++) {
         var textLine = line + words[n] + ' ';
         var textWidth = ctx.measureText(textLine).width;
         if (textWidth > width) {
+          textNew[textNew.length] = line;
           line = words[n] + ' ';
           y += lineHeight;
         } else {
           line = textLine;
         }
       }
-      y = y+45;
+      textNew[textNew.length] = line;
+      y = y + 55;
+
       // отрисовка тени
-      ctx.beginPath();   
+      ctx.beginPath();
       ctx.moveTo(410, 230 - y);
       ctx.lineTo(610, 230 - y);
       ctx.lineTo(610, 230);
@@ -409,7 +413,7 @@
       ctx.fill();
 
       // отрисовка окна сообщения
-      ctx.beginPath();   
+      ctx.beginPath();
       ctx.moveTo(400, 220 - y);
       ctx.lineTo(600, 220 - y);
       ctx.lineTo(600, 220);
@@ -422,20 +426,11 @@
       ctx.font = '16px PT Mono';
       ctx.fillStyle = '#000';
 
-      y = 250-y;
-      line = '';
-      for (n = 0; n < words.length; n++) {
-        textLine = line + words[n] + ' ';
-        textWidth = ctx.measureText(textLine).width;
-        if (textWidth > width) {
-          ctx.fillText(line, x, y);
-          line = words[n] + ' ';
-          y += lineHeight;
-        } else {
-          line = textLine;
-        }
-      }
-      ctx.fillText(line, x, y);
+      y = 255 - y;
+      for (n = 0; n < textNew.length; n++) {
+        ctx.fillText(textNew[n], x, y);
+        y += lineHeight;
+      };
     },
 
       /**
