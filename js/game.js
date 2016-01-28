@@ -378,11 +378,12 @@
      * Отрисовка сообщения
      */
     _drawText: function(text, width) {
+      var LINE_HEIGHT = 25;
+      var X = 395;
+
       var words = text.split(' ');
       var line = '';
-      var x = 395;
       var y = 0;
-      var lineHeight = 25;
       var ctx = this.ctx;
       var textNew = [];
       ctx.font = '16px PT Mono';
@@ -394,7 +395,7 @@
         if (textWidth > width) {
           textNew[textNew.length] = line;
           line = words[n] + ' ';
-          y += lineHeight;
+          y += LINE_HEIGHT;
         } else {
           line = textLine;
         }
@@ -402,25 +403,23 @@
       textNew[textNew.length] = line;
       y = y + 55;
 
+      function drawPane(x1, y1, delta1, delta2, widthPane) {
+        ctx.beginPath();
+        ctx.moveTo(x1 + delta1, y1 + delta1 - delta2);
+        ctx.lineTo(x1 + delta1 + widthPane, y1 + delta1 - delta2);
+        ctx.lineTo(x1 + delta1 + widthPane, y1 + delta1);
+        ctx.lineTo(x1 + delta1 - 100, y1 + delta1);
+        ctx.lineTo(x1 + delta1, y1 + delta1 - delta2);
+        ctx.fill();
+      }
+
       // отрисовка тени
-      ctx.beginPath();
-      ctx.moveTo(410, 230 - y);
-      ctx.lineTo(610, 230 - y);
-      ctx.lineTo(610, 230);
-      ctx.lineTo(310, 230);
-      ctx.lineTo(410, 230 - y);
       ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-      ctx.fill();
+      drawPane(400, 220, 10, y, width);
 
       // отрисовка окна сообщения
-      ctx.beginPath();
-      ctx.moveTo(400, 220 - y);
-      ctx.lineTo(600, 220 - y);
-      ctx.lineTo(600, 220);
-      ctx.lineTo(300, 220);
-      ctx.lineTo(400, 220 - y);
       ctx.fillStyle = '#FFFFFF';
-      ctx.fill();
+      drawPane(400, 220, 0, y, width);
 
       //отрисовка текста сообщения
       ctx.font = '16px PT Mono';
@@ -428,8 +427,8 @@
 
       y = 255 - y;
       for (n = 0; n < textNew.length; n++) {
-        ctx.fillText(textNew[n], x, y);
-        y += lineHeight;
+        ctx.fillText(textNew[n], X, y);
+        y += LINE_HEIGHT;
       }
     },
 
