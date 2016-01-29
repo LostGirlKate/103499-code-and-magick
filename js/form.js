@@ -22,48 +22,81 @@ var nameInput = formElement['review-name'];
 var commentInput = formElement['review-text'];
 var reviewGroup = document.getElementsByName('review-mark');
 
-reviewSubmit.setAttribute('disabled', true);
-
-
-function formValidate() {
-  var nameLabel = formElement.querySelector('.review-fields-name');
-  var commentLabel = formElement.querySelector('.review-fields-text');
-  var reviewFields = formElement.querySelector('.review-fields');
-  var checkValue = 0;
+// получение значений из cookie и установка значений полей
+nameInput.value = docCookies.getItem('name');
+var checkValueCookie = docCookies.getItem('checkValue');
+if (checkValueCookie !== '') {
   for (var i = 0; i < reviewGroup.length; i++) {
-    if (reviewGroup[i].type === 'radio' && reviewGroup[i].checked) {
-      checkValue = parseInt(reviewGroup[i].value, 10);
+    if (reviewGroup[i].type === 'radio' && reviewGroup[i].value === checkValueCookie) {
+      reviewGroup[i].checked = true;
     }
   }
-  if ((nameInput.value !== '') && ((checkValue >= 3) || ((checkValue < 3) && (commentInput.value !== '')))) {
-    reviewFields.setAttribute('class', 'review-form-control review-fields invisible');
-    reviewSubmit.removeAttribute('disabled');
-  } else {
-    reviewFields.setAttribute('class', 'review-form-control review-fields');
-    reviewSubmit.setAttribute('disabled', true);
-  }
-  if (nameInput.value !== '') {
-    nameLabel.setAttribute('class', 'review-fields-label review-fields-name invisible');
-  } else {
-    nameLabel.setAttribute('class', 'review-fields-label review-fields-name');
-  }
-  if (commentInput.value !== '' || checkValue >= 3) {
-    commentLabel.setAttribute('class', 'review-fields-label review-fields-text invisible');
-  } else {
-    commentLabel.setAttribute('class', 'review-fields-label review-fields-text');
-  }
 }
-
+//проверка валидации при загрузке
+reviewSubmit.disabled = !formValidate();
+//переопределение событий onchange/oninput
 for (var n = 0; n < reviewGroup.length; n++) {
   if (reviewGroup[n].type === 'radio') {
     reviewGroup[n].onchange = function() {
-      formValidate();
+      reviewSubmit.disabled = !formValidate();
     };
   }
 }
 nameInput.oninput = function() {
-  formValidate();
+  reviewSubmit.disabled = !formValidate();
 };
 commentInput.oninput = function() {
-  formValidate();
+  reviewSubmit.disabled = !formValidate();
 };
+
+//функция получения значения оценки
+function getCheckValue() {
+  var checkValue = 0;
+  for (i = 0; i < reviewGroup.length; i++) {
+    if (reviewGroup[i].type === 'radio' && reviewGroup[i].checked) {
+      checkValue = parseInt(reviewGroup[i].value, 10);
+    }
+  }
+  return checkValue;
+}
+
+//функция проверки валидации формы
+function formValidate() {
+  var nameLabel = formElement.querySelector('.review-fields-name');
+  var commentLabel = formElement.querySelector('.review-fields-text');
+  var reviewFields = formElement.querySelector('.review-fields');
+  var checkValue = getCheckValue();
+  if (nameInput.value !== '') {
+    nameLabel.classList.add('invisible');
+  } else {
+    nameLabel.classList.remove('invisible');
+  }
+  if (commentInput.value !== '' || checkValue >= 3) {
+    commentLabel.classList.add('invisible');
+  } else {
+    commentLabel.classList.remove('invisible');
+  }
+  if ((nameInput.value !== '') && ((checkValue >= 3) || ((checkValue < 3) && (commentInput.value !== '')))) {
+    reviewFields.classList.add('invisible');
+    return true;
+  } else {
+    reviewFields.classList.remove('invisible');
+    return false;
+  }
+}
+
+//переопределение события onsubmit для записи значений в cookie
+formElement.onsubmit = function(evt) {
+  evt.preventDefault();
+  var curDate = new Date();
+  var birthDate = new Date(curDate.getFullYear(), 2, 23);
+  if ((curDate - birthDate) < 0) {
+    birthDate.setFullYear(curDate.getFullYear() - 1);
+  }
+  var dateToExpire = new Date(curDate.valueOf() + (curDate - birthDate));
+  var formattedDateToExpire = dateToExpire.toUTCString();
+  document.cookie = 'name=' + nameInput.value + ';expires=' + formattedDateToExpire;
+  document.cookie = 'checkValue=' + getCheckValue() + ';expires=' + formattedDateToExpire;
+  formElement.submit();
+};
+
