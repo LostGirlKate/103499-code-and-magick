@@ -16,7 +16,6 @@
   };
 })();
 
-var docCookies;
 var formElement = document.querySelector('.review-form');
 var reviewSubmit = formElement.querySelector('.review-submit');
 var nameInput = formElement['review-name'];
@@ -104,8 +103,8 @@ formElement.onsubmit = function(evt) {
   }
   var dateToExpire = new Date(curDate.valueOf() + (curDate - birthDate));
   var formattedDateToExpire = dateToExpire.toUTCString();
-  document.cookie = 'name=' + nameInput.value + ';expires=' + formattedDateToExpire;
-  document.cookie = 'checkValue=' + getCheckValue() + ';expires=' + formattedDateToExpire;
+  docCookies.setItem('name', nameInput.value, formattedDateToExpire);
+  docCookies.setItem('checkValue', getCheckValue(), formattedDateToExpire);
   formElement.submit();
 };
 
