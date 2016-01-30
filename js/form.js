@@ -16,10 +16,14 @@
   };
 })();
 
+var docCookies;
 var formElement = document.querySelector('.review-form');
 var reviewSubmit = formElement.querySelector('.review-submit');
 var nameInput = formElement['review-name'];
+var nameLabel = formElement.querySelector('.review-fields-name');
 var commentInput = formElement['review-text'];
+var commentLabel = formElement.querySelector('.review-fields-text');
+var reviewFields = formElement.querySelector('.review-fields');
 var reviewGroup = document.getElementsByName('review-mark');
 
 // получение значений из cookie и установка значений полей
@@ -60,23 +64,28 @@ function getCheckValue() {
   return checkValue;
 }
 
-//функция проверки валидации формы
-function formValidate() {
-  var nameLabel = formElement.querySelector('.review-fields-name');
-  var commentLabel = formElement.querySelector('.review-fields-text');
-  var reviewFields = formElement.querySelector('.review-fields');
-  var checkValue = getCheckValue();
+function nameValidate() {
   if (nameInput.value !== '') {
     nameLabel.classList.add('invisible');
   } else {
     nameLabel.classList.remove('invisible');
   }
+}
+
+function commentValidate() {
+  var checkValue = getCheckValue();
   if (commentInput.value !== '' || checkValue >= 3) {
     commentLabel.classList.add('invisible');
   } else {
     commentLabel.classList.remove('invisible');
   }
-  if ((nameInput.value !== '') && ((checkValue >= 3) || ((checkValue < 3) && (commentInput.value !== '')))) {
+}
+
+//функция проверки валидации формы
+function formValidate() {
+  nameValidate();
+  commentValidate();
+  if (nameLabel.classList.contains('invisible') && commentLabel.classList.contains('invisible')) {
     reviewFields.classList.add('invisible');
     return true;
   } else {
