@@ -377,68 +377,60 @@
     /**
      * Отрисовка сообщения
      */
-     _drawText: function(text,width) {
-        var words = text.split(" ");
-        var line = "";
-        var x= 390;
-        var y= 0;
-        var lineHeight=25;
-        var ctx = this.ctx;
-        ctx.font= '16px PT Mono';
+    _drawText: function(text, width) {
+      var LINE_HEIGHT = 25;
+      var X = 395;
 
-        // вычисление высоты окна сообщения
-        for (var n = 0; n < words.length; n++) {
-            var textLine = line + words[n] + " ";
-            var textWidth = ctx.measureText(textLine).width;
-            if (textWidth > width) {
-                line = words[n] + " ";
-                y += lineHeight;
-            }
-            else {
-                line = textLine;
-            }
+      var words = text.split(' ');
+      var line = '';
+      var y = 0;
+      var ctx = this.ctx;
+      var textNew = [];
+      ctx.font = '16px PT Mono';
+
+      // вычисление высоты окна сообщения, создание массива строк для отрисовки
+      for (var n = 0; n < words.length; n++) {
+        var textLine = line + words[n] + ' ';
+        var textWidth = ctx.measureText(textLine).width;
+        if (textWidth > width) {
+          textNew[textNew.length] = line;
+          line = words[n] + ' ';
+          y += LINE_HEIGHT;
+        } else {
+          line = textLine;
         }
-        y=y+45;
-        // отрисовка тени
-        ctx.beginPath();   
-        ctx.moveTo(410,230-y);
-        ctx.lineTo(610,230-y);
-        ctx.lineTo(610,230);
-        ctx.lineTo(310,230);
-        ctx.lineTo(410,230-y);
-        ctx.fillStyle= 'rgba(0, 0, 0, 0.7)';
+      }
+      textNew[textNew.length] = line;
+      y = y + 55;
+
+      function drawPane(x1, y1, delta1, delta2, widthPane) {
+        ctx.beginPath();
+        ctx.moveTo(x1 + delta1, y1 + delta1 - delta2);
+        ctx.lineTo(x1 + delta1 + widthPane, y1 + delta1 - delta2);
+        ctx.lineTo(x1 + delta1 + widthPane, y1 + delta1);
+        ctx.lineTo(x1 + delta1 - 100, y1 + delta1);
+        ctx.lineTo(x1 + delta1, y1 + delta1 - delta2);
         ctx.fill();
+      }
 
-        // отрисовка окна сообщения
-        ctx.beginPath();   
-        ctx.moveTo(400,220-y);
-        ctx.lineTo(600,220-y);
-        ctx.lineTo(600,220);
-        ctx.lineTo(300,220);
-        ctx.lineTo(400,220-y);
-        ctx.fillStyle= '#FFFFFF';
-        ctx.fill();
+      // отрисовка тени
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+      drawPane(400, 220, 10, y, width);
 
-        //отрисовка текста сообщения
-        ctx.font= '16px PT Mono';
-        ctx.fillStyle= '#000';
+      // отрисовка окна сообщения
+      ctx.fillStyle = '#FFFFFF';
+      drawPane(400, 220, 0, y, width);
 
-        y= 250-y;
-        var line = "";
-        for (var n = 0; n < words.length; n++) {
-            var textLine = line + words[n] + " ";
-            var textWidth = ctx.measureText(textLine).width;
-            if (textWidth > width) {
-                ctx.fillText(line, x, y);
-                line = words[n] + " ";
-                y += lineHeight;
-            }
-            else {
-                line = textLine;
-            }
-        }
-        ctx.fillText(line, x, y);
-     },
+      //отрисовка текста сообщения
+      ctx.font = '16px PT Mono';
+      ctx.fillStyle = '#000';
+
+      y = 255 - y;
+      for (n = 0; n < textNew.length; n++) {
+        ctx.fillText(textNew[n], X, y);
+        y += LINE_HEIGHT;
+      }
+    },
 
       /**
      * Отрисовка экрана паузы.
