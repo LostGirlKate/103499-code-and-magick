@@ -19,51 +19,67 @@
 var formElement = document.querySelector('.review-form');
 var reviewSubmit = formElement.querySelector('.review-submit');
 var nameInput = formElement['review-name'];
+var nameLabel = formElement.querySelector('.review-fields-name');
 var commentInput = formElement['review-text'];
+var commentLabel = formElement.querySelector('.review-fields-text');
 var reviewGroup = document.getElementsByName('review-mark');
 
-reviewSubmit.setAttribute('disabled', true);
 
+//проверка валидации при загрузке
+reviewSubmit.disabled = !formValidate();
+//переопределение событий onchange/oninput
+for (var n = 0; n < reviewGroup.length; n++) {
+  if (reviewGroup[n].type === 'radio') {
+    reviewGroup[n].onchange = function() {
+      reviewSubmit.disabled = !formValidate();
+    };
+  }
+}
+nameInput.oninput = function() {
+  reviewSubmit.disabled = !formValidate();
+};
+commentInput.oninput = function() {
+  reviewSubmit.disabled = !formValidate();
+};
 
-function formValidate() {
-  var nameLabel = formElement.querySelector('.review-fields-name');
-  var commentLabel = formElement.querySelector('.review-fields-text');
-  var reviewFields = formElement.querySelector('.review-fields');
+//функция получения значения оценки
+function getCheckValue() {
   var checkValue = 0;
   for (var i = 0; i < reviewGroup.length; i++) {
     if (reviewGroup[i].type === 'radio' && reviewGroup[i].checked) {
       checkValue = parseInt(reviewGroup[i].value, 10);
     }
   }
-  if ((nameInput.value !== '') && ((checkValue >= 3) || ((checkValue < 3) && (commentInput.value !== '')))) {
-    reviewFields.setAttribute('class', 'review-form-control review-fields invisible');
-    reviewSubmit.removeAttribute('disabled');
-  } else {
-    reviewFields.setAttribute('class', 'review-form-control review-fields');
-    reviewSubmit.setAttribute('disabled', true);
-  }
+  return checkValue;
+}
+
+function nameValidate() {
   if (nameInput.value !== '') {
-    nameLabel.setAttribute('class', 'review-fields-label review-fields-name invisible');
+    nameLabel.classList.add('invisible');
   } else {
-    nameLabel.setAttribute('class', 'review-fields-label review-fields-name');
-  }
-  if (commentInput.value !== '' || checkValue >= 3) {
-    commentLabel.setAttribute('class', 'review-fields-label review-fields-text invisible');
-  } else {
-    commentLabel.setAttribute('class', 'review-fields-label review-fields-text');
+    nameLabel.classList.remove('invisible');
   }
 }
 
-for (var n = 0; n < reviewGroup.length; n++) {
-  if (reviewGroup[n].type === 'radio') {
-    reviewGroup[n].onchange = function() {
-      formValidate();
-    };
+function commentValidate() {
+  var checkValue = getCheckValue();
+  if (commentInput.value !== '' || checkValue >= 3) {
+    commentLabel.classList.add('invisible');
+  } else {
+    commentLabel.classList.remove('invisible');
   }
 }
-nameInput.oninput = function() {
-  formValidate();
-};
-commentInput.oninput = function() {
-  formValidate();
-};
+
+//функция проверки валидации формы
+function formValidate() {
+  var reviewFields = formElement.querySelector('.review-fields');
+  nameValidate();
+  commentValidate();
+  if (nameLabel.classList.contains('invisible') && commentLabel.classList.contains('invisible')) {
+    reviewFields.classList.add('invisible');
+    return true;
+  } else {
+    reviewFields.classList.remove('invisible');
+    return false;
+  }
+}
