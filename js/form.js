@@ -35,6 +35,7 @@ if (checkValueCookie !== '') {
     }
   }
 }
+
 //проверка валидации при загрузке
 reviewSubmit.disabled = !formValidate();
 //переопределение событий onchange/oninput
