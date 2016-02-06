@@ -13,23 +13,11 @@
   });
 
   function setRating(element, rating) {
-    switch (rating) {
-      case 2 :
-        element.querySelector('.review-rating').classList.add('review-rating-two');
-        break;
-      case 3 :
-        element.querySelector('.review-rating').classList.add('review-rating-three');
-        break;
-      case 4 :
-        element.querySelector('.review-rating').classList.add('review-rating-four');
-        break;
-      case 5 :
-        element.querySelector('.review-rating').classList.add('review-rating-five');
-        break;
-    }
+    element.querySelector('.review-rating').classList.add('review-rating-' + rating);
   }
 
   function getElementFromTemplate(data) {
+    var IMAGE_SIZE = 124;
     var template = document.querySelector('#review-template');
     if ('content' in template) {
       var element = template.content.children[0].cloneNode(true);
@@ -40,8 +28,8 @@
     element.querySelector('.review-text').textContent = data.description;
     var userImage = new Image();
     userImage.src = data.author.picture;
-    userImage.width = 124;
-    userImage.height = 124;
+    userImage.width = IMAGE_SIZE;
+    userImage.height = IMAGE_SIZE;
     userImage.title = data.author.name;
     userImage.classList.add('review-author');
     userImage.onload = function() {
