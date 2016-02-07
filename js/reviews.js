@@ -7,6 +7,13 @@
 
   var container = document.querySelector('.reviews-list');
   var sectionReviews = document.querySelector('.main-section.reviews');
+  var ratingArray = {
+    2: 'two',
+    3: 'three',
+    4: 'four',
+    5: 'five'
+  };
+
   var filters = document.querySelectorAll('[name=reviews]');
   var reviews = [];
   for (var i = 0; i < filters.length; i++) {
@@ -119,7 +126,7 @@
   }
 
   function setRating(element, rating) {
-    element.querySelector('.review-rating').classList.add('review-rating-' + rating);
+    element.querySelector('.review-rating').classList.add('review-rating-' + ratingArray[rating]);
   }
 
   function getElementFromTemplate(data) {
