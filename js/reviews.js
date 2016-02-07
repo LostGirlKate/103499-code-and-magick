@@ -126,6 +126,7 @@
   }
 
   function setRating(element, rating) {
+    if (rating > 1 && rating < 6)
     element.querySelector('.review-rating').classList.add('review-rating-' + ratingArray[rating]);
   }
 
