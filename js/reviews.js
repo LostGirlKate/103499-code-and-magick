@@ -7,13 +7,20 @@
 
   var container = document.querySelector('.reviews-list');
 
+  var ratingArray = {
+    2: 'two',
+    3: 'three',
+    4: 'four',
+    5: 'five'
+  };
+
   reviews.forEach( function(review) {
     var element = getElementFromTemplate(review);
     container.appendChild(element);
   });
 
   function setRating(element, rating) {
-    element.querySelector('.review-rating').classList.add('review-rating-' + rating);
+    element.querySelector('.review-rating').classList.add('review-rating-' + ratingArray[rating]);
   }
 
   function getElementFromTemplate(data) {

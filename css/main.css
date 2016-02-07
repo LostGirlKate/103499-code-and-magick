@@ -274,16 +274,16 @@ input[type=radio]:checked + .reviews-filter-item {
 }
 
 
-.review-rating-2 {
+.review-rating-two {
   width: 60px;
 }
-.review-rating-3 {
+.review-rating-three {
   width: 90px;
 }
-.review-rating-4 {
+.review-rating-four {
   width: 120px;
 }
-.review-rating-5 {
+.review-rating-five {
   width: 150px;
 }
 
