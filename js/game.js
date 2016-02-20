@@ -69,6 +69,32 @@
     DOWN: 8
   };
 
+
+  var BG_IMAGE_WIDTH = 1024;
+  var cloudsBlock = document.querySelector('.header-clouds');
+  var cloudsStartPos = (cloudsBlock.offsetWidth - BG_IMAGE_WIDTH) / 2;
+  var cloudsCanMove = (window.pageYOffset > cloudsBlock.offsetHeight) ? false : true;
+  var cloudsScrollTimeout;
+  var gameBlock = document.querySelector('.demo');
+  var gamePause = (gameBlock.getBoundingClientRect().top + gameBlock.offsetHeight < 0) ? true : false;
+
+
+
+  window.addEventListener('scroll', function() {
+    clearTimeout(cloudsScrollTimeout);
+    cloudsScrollTimeout = setTimeout( function() {
+      cloudsCanMove = (window.pageYOffset > cloudsBlock.offsetHeight) ? false : true;
+      gamePause = (gameBlock.getBoundingClientRect().top + gameBlock.offsetHeight < 0) ? true : false;
+    }
+    , 100);
+    if (cloudsCanMove) {
+      cloudsBlock.style.backgroundPosition = cloudsStartPos - window.pageYOffset + 'px';
+    }
+    if (gamePause) {
+      game.setGameStatus(window.Game.Verdict.PAUSE);
+    }
+  });
+
   /**
    * Правила перерисовки объектов в зависимости от состояния игры.
    * @type {Object.<ObjectType, function(Object, Object, number): Object>}
