@@ -1,3 +1,5 @@
+/* global Review: true */
+
 'use strict';
 
 (function() {
@@ -7,12 +9,6 @@
 
   var container = document.querySelector('.reviews-list');
   var sectionReviews = document.querySelector('.main-section.reviews');
-  var ratingArray = {
-    2: 'two',
-    3: 'three',
-    4: 'four',
-    5: 'five'
-  };
 
   var filters = document.querySelector('.reviews-filter');
   var reviews = [];
@@ -36,6 +32,10 @@
 
   function renderReviews(reviewsArray, pageNumber, replace) {
     if (replace) {
+      var renderedElements = container.querySelectorAll('.review');
+      [].forEach.call(renderedElements, function(el) {
+        container.removeChild(el);
+      })
       container.innerHTML = '';
       currentPage = 0;
     }
@@ -46,8 +46,9 @@
     var pageRenders = reviewsArray.slice(from, to);
 
     pageRenders.forEach( function(review) {
-      var element = getElementFromTemplate(review);
-      fragment.appendChild(element);
+      var reviewElement = new Review(review);
+      reviewElement.render();
+      fragment.appendChild(reviewElement.element);
     });
     container.appendChild(fragment);
     sectionReviews.classList.remove('reviews-list-loading');
@@ -148,36 +149,6 @@
     xhr.send();
   }
 
-  function setRating(element, rating) {
-    if (rating > 1 && rating < 6) {
-      element.querySelector('.review-rating').classList.add('review-rating-' + ratingArray[rating]);
-    }
-  }
-
-  function getElementFromTemplate(data) {
-    var IMAGE_SIZE = 124;
-    var template = document.querySelector('#review-template');
-    if ('content' in template) {
-      var element = template.content.children[0].cloneNode(true);
-    } else {
-      element = template.children[0].cloneNode(true);
-    }
-    setRating(element, data.rating);
-    element.querySelector('.review-text').textContent = data.description;
-    var userImage = new Image();
-    userImage.src = data.author.picture;
-    userImage.width = IMAGE_SIZE;
-    userImage.height = IMAGE_SIZE;
-    userImage.title = data.author.name;
-    userImage.classList.add('review-author');
-    userImage.onload = function() {
-      element.replaceChild(userImage, element.querySelector('.review-author'));
-    };
-    userImage.onerror = function() {
-      element.classList.add('review-load-failure');
-    };
-    return element;
-  }
 
   filterElement.classList.remove('invisible');
 })();

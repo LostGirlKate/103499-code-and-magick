@@ -73,18 +73,33 @@
   var BG_IMAGE_WIDTH = 1024;
   var cloudsBlock = document.querySelector('.header-clouds');
   var cloudsStartPos = (cloudsBlock.offsetWidth - BG_IMAGE_WIDTH) / 2;
-  var cloudsCanMove = (window.pageYOffset > cloudsBlock.offsetHeight) ? false : true;
+  var cloudsCanMove = getCloudsCanMove();
   var cloudsScrollTimeout;
   var gameBlock = document.querySelector('.demo');
-  var gamePause = (gameBlock.getBoundingClientRect().top + gameBlock.offsetHeight < 0) ? true : false;
+  var gamePause = getGamePaused();
 
 
+  function getGamePaused() {
+    if (gameBlock.getBoundingClientRect().top + gameBlock.offsetHeight < 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function getCloudsCanMove() {
+    if (window.pageYOffset > cloudsBlock.offsetHeight) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   window.addEventListener('scroll', function() {
     clearTimeout(cloudsScrollTimeout);
     cloudsScrollTimeout = setTimeout( function() {
-      cloudsCanMove = (window.pageYOffset > cloudsBlock.offsetHeight) ? false : true;
-      gamePause = (gameBlock.getBoundingClientRect().top + gameBlock.offsetHeight < 0) ? true : false;
+      cloudsCanMove = getCloudsCanMove();
+      gamePause = getGamePaused();
     }
     , 100);
     if (cloudsCanMove) {
