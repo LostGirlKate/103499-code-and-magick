@@ -1,3 +1,4 @@
+'use strict';
 (function() {
   function Review(data) {
     this._data = data;
@@ -26,8 +27,7 @@
       this.element.classList.add('review-load-failure');
     }.bind(this);
   };
-
-    var ratingArray = {
+  var ratingArray = {
     2: 'two',
     3: 'three',
     4: 'four',
@@ -41,4 +41,4 @@
   }
 
   window.Review = Review;
-}) ();
+})();

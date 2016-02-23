@@ -35,7 +35,7 @@
       var renderedElements = container.querySelectorAll('.review');
       [].forEach.call(renderedElements, function(el) {
         container.removeChild(el);
-      })
+      });
       container.innerHTML = '';
       currentPage = 0;
     }
