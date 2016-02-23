@@ -1,3 +1,4 @@
+'use strict';
 (function() {
   function Review(data) {
     this._data = data;
@@ -27,7 +28,7 @@
     }.bind(this);
   };
 
-    var ratingArray = {
+  var ratingArray = {
     2: 'two',
     3: 'three',
     4: 'four',
@@ -41,4 +42,4 @@
   }
 
   window.Review = Review;
-}) ();
+})();
