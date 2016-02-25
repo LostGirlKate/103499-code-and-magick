@@ -1,4 +1,4 @@
-/* global Review: true, Gallery: true */
+/* global Review: true */
 
 'use strict';
 
@@ -11,8 +11,6 @@
   var sectionReviews = document.querySelector('.main-section.reviews');
 
   var filters = document.querySelector('.reviews-filter');
-  var photogalleryImages = document.querySelector('.photogallery');
-  var gallery = new Gallery();
   var reviews = [];
   var filteredReviews = [];
   var currentPage = 0;
@@ -26,16 +24,6 @@
       setActiveFilter(clickedElement.htmlFor);
     }
   });
-
-  photogalleryImages.addEventListener('click', _onClick);
-
-  function _onClick(evt) {
-    evt.preventDefault();
-    var clickedElementImage = evt.target.parentElement;
-    if (clickedElementImage.classList.contains('photogallery-image')) {
-      gallery.show();
-    }
-  }
 
   moreRendersButton.addEventListener('click', function() {
     renderReviews(filteredReviews, ++currentPage);

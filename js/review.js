@@ -26,6 +26,32 @@
     userImage.onerror = function() {
       this.element.classList.add('review-load-failure');
     }.bind(this);
+
+    var answerYes = this.element.querySelector('.review-quiz-answer-yes');
+    var answerNo = this.element.querySelector('.review-quiz-answer-no');
+
+    answerYes.addEventListener('click', function(evt) {
+      evt.preventDefault();
+      if (this._data.rating < 5 && !answerYes.classList.contains('review-quiz-answer-active')) {
+        this.element.querySelector('.review-rating').classList.remove('review-rating-' + ratingArray[this._data.rating]);
+        this._data.rating = this._data.rating + 1;
+        setRating(this.element, this._data.rating);
+        answerYes.classList.add('review-quiz-answer-active');
+        answerNo.classList.remove('review-quiz-answer-active');
+      }
+    }.bind(this));
+
+    answerNo.addEventListener('click', function(evt) {
+      evt.preventDefault();
+      if (this._data.rating > 1 && !answerNo.classList.contains('review-quiz-answer-active')) {
+        this.element.querySelector('.review-rating').classList.remove('review-rating-' + ratingArray[this._data.rating]);
+        this._data.rating = this._data.rating - 1;
+        setRating(this.element, this._data.rating);
+        answerNo.classList.add('review-quiz-answer-active');
+        answerYes.classList.remove('review-quiz-answer-active');
+      }
+    }.bind(this));
+
   };
 
   var ratingArray = {
