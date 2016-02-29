@@ -4,6 +4,6 @@ define([
   'game',
   'form',
   'reviews',
-  'photos'
-  ], function() {}
-)
+  'photos'],
+  function() {}
+);
