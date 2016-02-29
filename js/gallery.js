@@ -1,5 +1,7 @@
 'use strict';
-(function() {
+
+define(['video'],
+  function(Video) {
   var Gallery = function() {
     this.element = document.querySelector('.overlay-gallery');
     this._closeButton = this.element.querySelector('.overlay-gallery-close');
@@ -32,18 +34,66 @@
   };
 
   Gallery.prototype._onDocumentKeyDown = function(e) {
-    if (e.which === 27) {
-      this.hide();
+    switch (e.which) {
+      case 27:
+        this.hide();
+        break;
+      case 37:
+        this._onControlLeftClick();
+        break;
+      case 39:
+        this._onControlRightClick();
+        break;
     }
   };
 
   Gallery.prototype._onControlLeftClick = function() {
-    console.log('_onControlLeftClick');
+    if (this._currentPicture > 0) {
+      this.setCurrentPicture(this._currentPicture - 1);
+    }
   };
 
   Gallery.prototype._onControlRightClick = function() {
-    console.log('_onControlRightClick');
+    if (this._currentPicture < this._Photos.length - 1) {
+      this.setCurrentPicture(this._currentPicture + 1);
+    }
   };
 
-  window.Gallery = Gallery;
-})();
+  Gallery.prototype.setPictures = function(Photo) {
+    this._Photos = Photo.slice(0);
+  };
+
+  Gallery.prototype.setCurrentPicture = function(number) {
+    var IMAGE_HEIGHT = 450;
+    var imageContainer = this.element.querySelector('.overlay-gallery-preview');
+    this._currentPicture = number;
+    var media;
+    if (this._Photos[number] instanceof Video) {
+      media = document.createElement('VIDEO');
+      media.src = this._Photos[number]._src;
+      media.height = IMAGE_HEIGHT;
+      media.autoplay = true;
+      media.loop = true;
+      media.addEventListener('click', function(evt) {
+        if (evt.target.paused) {
+          evt.target.play();
+        } else {
+          evt.target.pause();
+        }
+      });
+    } else {
+      media = new Image();
+      media.src = this._Photos[number]._src;
+      media.height = IMAGE_HEIGHT;
+    }
+    while (imageContainer.lastChild.nodeType === 3 || imageContainer.lastChild.tagName === 'IMG' || imageContainer.lastChild.tagName === 'VIDEO') {
+      imageContainer.removeChild(imageContainer.lastChild);
+    }
+    imageContainer.appendChild(media);
+    this.element.querySelector('.preview-number-current').textContent = number + 1;
+    this.element.querySelector('.preview-number-total').textContent = this._Photos.length;
+  };
+
+  return Gallery;
+
+});
