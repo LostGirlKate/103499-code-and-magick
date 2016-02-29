@@ -2,6 +2,9 @@
 
 define(['video'],
   function(Video) {
+    /**
+    * @constructor
+    */
     var Gallery = function() {
       this.element = document.querySelector('.overlay-gallery');
       this._closeButton = this.element.querySelector('.overlay-gallery-close');
@@ -59,14 +62,24 @@ define(['video'],
       }
     };
 
+    /**
+     * @param {Array.<Object>} Photo
+     */
     Gallery.prototype.setPictures = function(Photo) {
       this._Photos = Photo.slice(0);
     };
 
+     /**
+     * @param {number} number
+     */
     Gallery.prototype.setCurrentPicture = function(number) {
+      /**
+      * @const {number}
+      */
       var IMAGE_HEIGHT = 450;
       var imageContainer = this.element.querySelector('.overlay-gallery-preview');
       this._currentPicture = number;
+      /** type {Object}  */
       var media;
       if (this._Photos[number] instanceof Video) {
         media = document.createElement('VIDEO');

@@ -419,6 +419,9 @@ define(function() {
      * Отрисовка сообщения
      */
     _drawText: function(text, width) {
+      /**
+      * @const {number}
+      */
       var LINE_HEIGHT = 25;
       var X = 395;
 
@@ -444,6 +447,13 @@ define(function() {
       textNew[textNew.length] = line;
       y = y + 55;
 
+      /**
+      * @param {number} x1
+      * @param {number} y1
+      * @param {number} delta1
+      * @param {number} delta2
+      * @param {number} widthPane
+      */
       function drawPane(x1, y1, delta1, delta2, widthPane) {
         ctx.beginPath();
         ctx.moveTo(x1 + delta1, y1 + delta1 - delta2);

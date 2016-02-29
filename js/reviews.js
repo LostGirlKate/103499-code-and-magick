@@ -12,6 +12,9 @@ define(['review'], function(Review) {
   var reviews = [];
   var filteredReviews = [];
   var currentPage = 0;
+  /**
+  * @const {number}
+  */
   var PAGE_SIZE = 3;
   var moreRendersButton = document.querySelector('.reviews-controls-more');
 
@@ -29,6 +32,11 @@ define(['review'], function(Review) {
 
   getReviews();
 
+  /**
+  * @param {Array.<Object>} reviewsArray
+  * @param {number} pageNumber
+  * @param {boolean=} replace
+  */
   function renderReviews(reviewsArray, pageNumber, replace) {
     if (replace) {
       var renderedElements = container.querySelectorAll('.review');
@@ -58,6 +66,9 @@ define(['review'], function(Review) {
     }
   }
 
+  /**
+  * @param {string} id
+  */
   function setActiveFilter(id) {
     filteredReviews = reviews.slice(0);
     switch (id) {
@@ -79,6 +90,9 @@ define(['review'], function(Review) {
     renderReviews(filteredReviews, 0, true);
   }
 
+  /**
+  * * @param {Array.<Object>} filteredReviewsP
+  */
   function filterRecent(filteredReviewsP) {
     filteredReviewsP = filteredReviewsP.filter(
       function(el) {
@@ -97,6 +111,9 @@ define(['review'], function(Review) {
     return filteredReviewsP;
   }
 
+  /**
+  * * @param {Array.<Object>} filteredReviewsP
+  */
   function filterGoods(filteredReviewsP) {
     filteredReviewsP = filteredReviewsP.filter(
       function(el) {
@@ -110,7 +127,9 @@ define(['review'], function(Review) {
     );
     return filteredReviewsP;
   }
-
+  /**
+  * * @param {Array.<Object>} filteredReviewsP
+  */
   function filterBads(filteredReviewsP) {
     filteredReviewsP = filteredReviewsP.filter(
       function(el) {
@@ -124,7 +143,9 @@ define(['review'], function(Review) {
     );
     return filteredReviewsP;
   }
-
+  /**
+  * * @param {Array.<Object>} filteredReviewsP
+  */
   function filterPopular(filteredReviewsP) {
     filteredReviewsP = filteredReviewsP.sort(
       function(a, b) {

@@ -6,6 +6,7 @@ define([
   'video'],
   function(Photo, Gallery, Video) {
     var documentImages = document.querySelectorAll('.photogallery-image');
+    /** @type {Array.<Object>} */
     var imagesArray = Array.prototype.map.call(documentImages, function(img) {
       if (img.hasAttribute('data-replacement-video')) {
         return new Video(img.getAttribute('data-replacement-video'));
@@ -13,12 +14,16 @@ define([
         return new Photo(img.firstChild.src);
       }
     });
+    /** @type {Gallery} */
     var gallery = new Gallery();
     gallery.setPictures(imagesArray);
     var photogalleryImages = document.querySelector('.photogallery');
 
     photogalleryImages.addEventListener('click', _onClick);
 
+    /**
+    * @param {Event} evt
+    */
     function _onClick(evt) {
       evt.preventDefault();
       var clickedElementImage = evt.target.parentElement;

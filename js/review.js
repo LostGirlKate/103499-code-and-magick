@@ -1,11 +1,18 @@
 'use strict';
 
 define(function() {
+   /**
+  * @param {Object} data
+  * @constructor
+  */
   function Review(data) {
     this._data = data;
   }
 
   Review.prototype.render = function() {
+    /**
+    * @const {number}
+    */
     var IMAGE_SIZE = 124;
     var template = document.querySelector('#review-template');
     if ('content' in template) {
@@ -55,6 +62,10 @@ define(function() {
 
   };
 
+ /**
+   * Допустимые значения рейтинга
+   * @enum {number}
+   */
   var ratingArray = {
     2: 'two',
     3: 'three',
@@ -62,6 +73,10 @@ define(function() {
     5: 'five'
   };
 
+  /**
+  * @param {Object} element
+  * @param {number} rating
+  */
   function setRating(element, rating) {
     if (rating > 1 && rating < 6) {
       element.querySelector('.review-rating').classList.add('review-rating-' + ratingArray[rating]);
