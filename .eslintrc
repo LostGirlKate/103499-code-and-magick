@@ -4,6 +4,9 @@ env:
   browser: true
   node: true
 
+globals:
+  define: true
+
 extends:
   "eslint:recommended"
 
@@ -87,6 +90,3 @@ rules:
   no-process-exit: 2
   global-strict: [0, "always"]
   handle-callback-err: [2, "err"]
-
-globals:
-    docCookies: true
