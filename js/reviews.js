@@ -169,7 +169,6 @@ define(['review'], function(Review) {
       reviews = loadedReviews;
       filteredReviews = reviews.slice(0);
       setActiveFilter(activeFilter);
-      //renderReviews(loadedReviews, 0, true);
     };
     xhr.send();
   }

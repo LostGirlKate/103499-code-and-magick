@@ -33,13 +33,13 @@ define(['video'],
     };
 
     Gallery.prototype._onCloseClick = function() {
-      this.hide();
+      location.hash = '';
     };
 
     Gallery.prototype._onDocumentKeyDown = function(e) {
       switch (e.which) {
         case 27:
-          this.hide();
+          this._onCloseClick();
           break;
         case 37:
           this._onControlLeftClick();
@@ -52,13 +52,13 @@ define(['video'],
 
     Gallery.prototype._onControlLeftClick = function() {
       if (this._currentPicture > 0) {
-        this.setCurrentPicture(this._currentPicture - 1);
+        location.hash = '#photo/' + this._Photos[this._currentPicture - 1]._src;
       }
     };
 
     Gallery.prototype._onControlRightClick = function() {
       if (this._currentPicture < this._Photos.length - 1) {
-        this.setCurrentPicture(this._currentPicture + 1);
+        location.hash = '#photo/' + this._Photos[this._currentPicture + 1]._src;
       }
     };
 
@@ -70,20 +70,29 @@ define(['video'],
     };
 
      /**
-     * @param {number} number
+     * @param {?number} param
      */
-    Gallery.prototype.setCurrentPicture = function(number) {
+    Gallery.prototype.setCurrentPicture = function(param) {
       /**
       * @const {number}
       */
       var IMAGE_HEIGHT = 450;
       var imageContainer = this.element.querySelector('.overlay-gallery-preview');
-      this._currentPicture = number;
+      if (typeof (param) === 'number') {
+        var index = param;
+      } else if (typeof (param) === 'string') {
+        for (var i = 0; i < this._Photos.length; i++) {
+          if (this._Photos[i]._src === param) {
+            index = i;
+          }
+        }
+      }
+      this._currentPicture = index;
       /** type {Object}  */
       var media;
-      if (this._Photos[number] instanceof Video) {
+      if (this._Photos[index] instanceof Video) {
         media = document.createElement('VIDEO');
-        media.src = this._Photos[number]._src;
+        media.src = this._Photos[index]._src;
         media.height = IMAGE_HEIGHT;
         media.autoplay = true;
         media.loop = true;
@@ -96,14 +105,14 @@ define(['video'],
         });
       } else {
         media = new Image();
-        media.src = this._Photos[number]._src;
+        media.src = this._Photos[index]._src;
         media.height = IMAGE_HEIGHT;
       }
       while (imageContainer.lastChild.nodeType === 3 || imageContainer.lastChild.tagName === 'IMG' || imageContainer.lastChild.tagName === 'VIDEO') {
         imageContainer.removeChild(imageContainer.lastChild);
       }
       imageContainer.appendChild(media);
-      this.element.querySelector('.preview-number-current').textContent = number + 1;
+      this.element.querySelector('.preview-number-current').textContent = index + 1;
       this.element.querySelector('.preview-number-total').textContent = this._Photos.length;
     };
 
