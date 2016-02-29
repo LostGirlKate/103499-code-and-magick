@@ -9,6 +9,8 @@ define(['review'], function(Review) {
   var sectionReviews = document.querySelector('.main-section.reviews');
 
   var filters = document.querySelector('.reviews-filter');
+  var activeFilter = localStorage.getItem('activeFilter') || 'reviews-all';
+  document.getElementById(activeFilter).checked = true;
   var reviews = [];
   var filteredReviews = [];
   var currentPage = 0;
@@ -87,6 +89,8 @@ define(['review'], function(Review) {
         filteredReviews = filterPopular(filteredReviews);
         break;
     }
+    activeFilter = id;
+    localStorage.setItem('activeFilter', id);
     renderReviews(filteredReviews, 0, true);
   }
 
@@ -164,7 +168,8 @@ define(['review'], function(Review) {
       var loadedReviews = JSON.parse(rawData);
       reviews = loadedReviews;
       filteredReviews = reviews.slice(0);
-      renderReviews(loadedReviews, 0, true);
+      setActiveFilter(activeFilter);
+      //renderReviews(loadedReviews, 0, true);
     };
     xhr.send();
   }
