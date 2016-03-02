@@ -37,14 +37,26 @@ define(['video'],
     };
 
     Gallery.prototype._onDocumentKeyDown = function(e) {
+      /**
+      * @const {number}
+      */
+      var BTN_ESC = 27;
+       /**
+      * @const {number}
+      */
+      var BTN_LEFT = 37;
+       /**
+      * @const {number}
+      */
+      var BTN_RIGHT = 39;
       switch (e.which) {
-        case 27:
+        case BTN_ESC:
           this._onCloseClick();
           break;
-        case 37:
+        case BTN_LEFT:
           this._onControlLeftClick();
           break;
-        case 39:
+        case BTN_RIGHT:
           this._onControlRightClick();
           break;
       }
